@@ -3,6 +3,7 @@ package io.bankbridge.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.bankbridge.model.BankModel;
 import io.bankbridge.model.BankModelList;
+import io.bankbridge.util.JsonUtil;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -63,7 +64,7 @@ public class BanksServiceCacheImp implements BanksService {
             //initialize
             init();
 
-            //retrieve from cache
+            //retrieve from cache as map
             List<Map> result = new ArrayList<>();
             cacheManager.getCache(CACHE_NAME, String.class, String.class).forEach(entry -> {
                 Map map = new HashMap<>();
@@ -73,8 +74,8 @@ public class BanksServiceCacheImp implements BanksService {
             });
 
             //send banks
-            String resultAsString = new ObjectMapper().writeValueAsString(result);
-            return resultAsString;
+            //String resultAsString = new ObjectMapper().writeValueAsString(result);
+            return JsonUtil.objectToJson(result);
 
         } catch (Exception e) {
             throw new RuntimeException("Error while processing request.");

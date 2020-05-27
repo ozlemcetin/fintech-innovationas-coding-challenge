@@ -1,4 +1,4 @@
-package io.bankbridge.api;
+package io.bankbridge.util;
 
 import org.eclipse.jetty.http.HttpMethod;
 import spark.utils.IOUtils;
@@ -10,20 +10,21 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class HttpURLConnectionResponse {
+public class HttpURLConnectionUtil {
 
     private String inputStream;
     private int responseCode;
     private Map<String, List<String>> map;
 
-    public HttpURLConnectionResponse(String inputStream, int responseCode, Map<String, List<String>> map) {
+    public HttpURLConnectionUtil(String inputStream, int responseCode, Map<String, List<String>> map) {
         this.inputStream = inputStream;
         this.responseCode = responseCode;
         this.map = map;
     }
 
+
     //helper
-    public static HttpURLConnectionResponse createURLAndConnect(
+    public static HttpURLConnectionUtil createURLAndConnect(
             int port, String path, HttpMethod requestMethod, String jsonInputString) throws IOException {
 
         URL url = new URL("http://localhost:" + port + path);
@@ -70,8 +71,24 @@ public class HttpURLConnectionResponse {
         int responseCode = connection.getResponseCode();
         Map<String, List<String>> map = connection.getHeaderFields();
 
-        return new HttpURLConnectionResponse(inputStream,
+        return new HttpURLConnectionUtil(inputStream,
                 responseCode, map);
+
+    }
+
+    //helper
+    public static String createURLAndGETConnect(
+            String urlStr) throws IOException {
+
+        URL url = new URL(urlStr);
+
+        HttpURLConnection connection = connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod(HttpMethod.GET.toString());
+
+        connection.connect();
+
+        return IOUtils.toString(connection.getInputStream());
 
     }
 

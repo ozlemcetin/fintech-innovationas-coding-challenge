@@ -1,8 +1,8 @@
 package io.bankbridge.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.bankbridge.model.BankModel;
+import io.bankbridge.util.JsonUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,8 +28,8 @@ class BanksServiceRemoteCallsImpTest {
     @Test
     void init() throws Exception {
 
-        //init method call
-        BanksServiceRemoteCallsImp.init();
+        //service
+        service.init();
 
         //assertions - config initialized
         assertNotNull(BanksServiceRemoteCallsImp.config);
@@ -54,15 +54,10 @@ class BanksServiceRemoteCallsImpTest {
         String bic = "5678";
         {
             List<BankModel> banks = new ArrayList<>();
+            banks.add(new BankModel("1234", name, "GB", "OAUTH"));
+            banks.add(new BankModel(bic, "Credit Sweets", "CH", "OpenID"));
 
-            BankModel bankModel1 = new BankModel("1234", name, "GB", "OAUTH");
-            banks.add(bankModel1);
-
-            BankModel bankModel2 = new BankModel(bic, "Credit Sweets", "CH", "OpenID");
-            banks.add(bankModel2);
-
-            String resultAsString = new ObjectMapper().writeValueAsString(banks);
-            when(service.getBanks()).thenReturn(resultAsString);
+            when(service.getBanks()).thenReturn(JsonUtil.objectToJson(banks));
         }
 
         //service

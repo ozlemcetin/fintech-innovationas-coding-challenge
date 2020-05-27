@@ -3,6 +3,8 @@ package io.bankbridge.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.bankbridge.model.BankModelList;
 import org.ehcache.Cache;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,16 +12,16 @@ class BanksServiceCacheImpTest {
 
     BanksServiceCacheImp service;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         service = new BanksServiceCacheImp();
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void init() throws Exception {
 
-        //init method call
-        BanksServiceCacheImp.init();
+        //service
+        service.init();
 
         //assertions - cacheManager initialized
         assertNotNull(BanksServiceCacheImp.cacheManager);
@@ -41,7 +43,7 @@ class BanksServiceCacheImpTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getBanks() throws Exception {
 
         //service
