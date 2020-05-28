@@ -24,8 +24,8 @@ public class BankCRUDAPI {
         http1.get(Paths.API_BANK_ID, BankCRUDController.serveGetBankId);
         http1.put(Paths.API_BANK_JSON_ID, BankCRUDController.servePutBankJsonId);
         http1.put(Paths.API_BANK_QUERY_PARAMS_ID, BankCRUDController.servePutBankQueryParamsId);
-        http1.delete(Paths.API_BANK_ID, BankCRUDController.serveDeleteBankId);
-        http1.options(Paths.API_BANK_ID, BankCRUDController.serveOptionsBankId);
+        http1.delete(Paths.API_BANK_ID_DELETE, BankCRUDController.serveDeleteBankId);
+        http1.options(Paths.API_BANK_ID_PUT_OPTIONS, BankCRUDController.serveOptionsBankId);
 
         //Set up after-filters (called after each get/post)
         http1.after("*", Filters.addResponseTypeJson);

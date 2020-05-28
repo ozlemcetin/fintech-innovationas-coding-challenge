@@ -9,6 +9,8 @@ public class Paths {
     public static final String API_BANK_ID = "/bank/:id/";
     public static final String API_BANK_JSON_ID = "/bank/json/:id/";
     public static final String API_BANK_QUERY_PARAMS_ID = "/bank/queryParams/:id/";
+    public static final String API_BANK_ID_DELETE= "/bank/:id/delete/";
+    public static final String API_BANK_ID_PUT_OPTIONS= "/bank/:id/options/";
 
     //LIST
     public static final String API_V1_BANKS_ALL = "/v1/banks/all";

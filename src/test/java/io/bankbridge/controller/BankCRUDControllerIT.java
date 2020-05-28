@@ -8,7 +8,10 @@ import io.bankbridge.util.HttpURLConnectionUtil;
 import io.bankbridge.util.Paths;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.http.HttpStatus;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import spark.Spark;
 
 import java.io.FileNotFoundException;
@@ -114,7 +117,7 @@ class BankCRUDControllerIT {
         });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getBankFound() throws IOException {
 
         //given
@@ -241,7 +244,7 @@ class BankCRUDControllerIT {
     void deleteBank() throws IOException {
 
         //given
-        String bic = "1012";
+        String bic = "9995";
         {
             String path1 = Paths.API_BANK_QUERY_PARAMS +
                     "?bic=" + bic + "&name=Turkiye%20Is%20Bankasi&countryCode=TR&auth=SSL";
@@ -250,7 +253,7 @@ class BankCRUDControllerIT {
         }
 
         //when
-        String path = "/bank/" + bic;
+        String path = "/bank/" + bic + "/delete/";
         HttpURLConnectionUtil response = HttpURLConnectionUtil
                 .createURLAndConnect(DEFAULT_PORT, path, HttpMethod.DELETE, null);
 
@@ -260,6 +263,17 @@ class BankCRUDControllerIT {
         assertNotNull(response.getInputStream());
         assertTrue(response.getInputStream().contains(StatusResponse.SUCCESS.toString()));
         assertEquals(HttpStatus.OK_200, response.getResponseCode());
+
+        //Bank Not Found
+        {
+            Assertions.assertThrows(FileNotFoundException.class, () -> {
+
+                //when
+                String path2 = "/bank/queryParams/" + bic;
+                HttpURLConnectionUtil response2 = HttpURLConnectionUtil
+                        .createURLAndConnect(DEFAULT_PORT, path2, HttpMethod.GET, null);
+            });
+        }
 
     }
 
@@ -276,7 +290,7 @@ class BankCRUDControllerIT {
         }
 
         //when
-        String path = "/bank/" + bic;
+        String path = "/bank/" + bic + "/options/";
         HttpURLConnectionUtil response = HttpURLConnectionUtil
                 .createURLAndConnect(DEFAULT_PORT, path, HttpMethod.OPTIONS, null);
 
